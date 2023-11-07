@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES (1, 'test', '0ef15de6149819f2d10fc25b8c994b574245f193', 'root@root.com');
+INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES (1, 'root', '02be4d57999261838cebe45ec83ba6c1beb1457a', 'root@root.com');

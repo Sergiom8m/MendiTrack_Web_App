@@ -32,4 +32,5 @@ services:
       PMA_ARBITRARY: 1
     ports:
       - "8080:80"  # Mapea el puerto 8080 del host al puerto 80 de phpMyAdmin
-  
+    depends_on:
+      - db

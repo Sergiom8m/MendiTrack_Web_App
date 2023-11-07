@@ -7,7 +7,7 @@ import MySQLdb.cursors, re, hashlib
 app = Flask(__name__)
 
 # Crear las variables de configuracion
-app.secret_key = 'root'
+app.secret_key = '1234567'
 
 app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'root'
@@ -23,16 +23,13 @@ mysql = MySQL(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-    # Mensaje en caso de error
-    msg = ''
+
      # Mirar si existe algun POST request donde los campos 'username' y 'password' esten llenos
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
 
         # Crear variables para que sea mas sencillo trabajar con ellas
         username = request.form['username']
         password = request.form['password']
-        print(username)
-        print(password)
 
         # Hashear contraseñas
         hash = password + app.secret_key
