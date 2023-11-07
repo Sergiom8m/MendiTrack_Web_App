@@ -1,0 +1,35 @@
+version: '3'
+services:
+  app:
+    build: 
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - MYSQL_HOST=db
+
+  db:
+    image: mysql:latest  # Utiliza la imagen oficial de MySQL
+    ports:
+      - "3306:3306"  # Mapea el puerto 3306 del contenedor MySQL al puerto 3306 del host
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appDb
+    volumes:
+      - ./appDb.sql:/docker-entrypoint-initdb.d/appDb.sql
+
+      
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db  # Configura el host de MySQL para phpMyAdmin
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"  # Mapea el puerto 8080 del host al puerto 80 de phpMyAdmin
+  
