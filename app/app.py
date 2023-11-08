@@ -24,6 +24,7 @@ mysql = MySQL(app)
 @app.route('/', methods=['GET', 'POST'])
 def login():
 
+    msg=''
      # Mirar si existe algun POST request donde los campos 'username' y 'password' esten llenos
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
 
@@ -54,7 +55,79 @@ def login():
             # Si la cuenta no existe devolver un error
             msg = 'Incorrect username/password!'
         
-    return render_template('index.html', msg=msg)
+    return render_template('login.html', msg=msg)
+
+########################
+### PAGINA DE LOGOUT ###
+########################
+
+@app.route('/logout')
+def logout():
+   
+    # Para deslogear a un usuario borrar los datos de la sesion
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   session.pop('username', None)
+
+   # Redireccionar a la pagina de login
+   return redirect(url_for('login'))
+
+##########################
+### PAGINA DE REGISTRO ###
+##########################
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    
+    msg=''
+    # Mirar si existe algun POST request donde los campos 'username', 'password' y 'email' esten llenos
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+        
+        # Crear variables para que sea mas sencillo trabajar con ellas
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+
+         # Comprobar si el usuario ya ha sido registrado previamente
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        account = cursor.fetchone()
+
+        # Si existe ya una cuenta con esos datos mostrar un error
+        if account:
+            msg = 'Account already exists!'
+
+        # Comprobar la validez del email
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address!'
+
+        # Comprobar la validez del nombre
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers!'
+
+        # Comprobar que todos los campos esten completos
+        elif not username or not password or not email:
+            msg = 'Please fill out the form!'
+
+        else:
+            # Hashear la contraseña
+            hash = password + app.secret_key
+            hash = hashlib.sha1(hash.encode())
+            password = hash.hexdigest()
+
+            # Añadir la nueva cuenta a la DB
+            cursor.execute('INSERT INTO users VALUES (NULL, %s, %s, %s)', (username, password, email,))
+            mysql.connection.commit()
+            msg = 'You have successfully registered!'
+
+    elif request.method == 'POST':
+
+        # Mensaje para indicar que el formulario no esta completo
+        msg = 'Please fill out the form!'
+    
+    return render_template('registration.html', msg=msg)
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
