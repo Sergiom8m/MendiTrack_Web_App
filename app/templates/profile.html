@@ -1,22 +1,18 @@
 {% extends 'layout.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}MendiTrack - {{ account['username'] }}{% endblock %}
 
 {% block content %}
-<h2>Profile Page</h2>
+<h2>Perfil de {{ account['username'] }}</h2>
+<h3>Tus datos:</h3>
 <div>
-    <p>Your account details are below:</p>
     <table>
         <tr>
-            <td>Username:</td>
+            <td>Nombre de usuario:</td>
             <td>{{ account['username'] }}</td>
         </tr>
         <tr>
-            <td>Password:</td>
-            <td>******</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
+            <td>Correo electrónico:</td>
             <td>{{ account['email'] }}</td>
         </tr>
     </table>
