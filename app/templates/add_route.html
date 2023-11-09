@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}MendiTrack - Agregar Ruta{% endblock %}
+
+{% block content %}
+<h2>Agregar Nueva Ruta</h2>
+<form method="post">
+    <div class="form-group">
+        <label for="nombre">Nombre de la Ruta:</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" required>
+    </div>
+    <div class="form-group">
+        <label for="dificultad">Dificultad:</label>
+        <input type="text" class="form-control" id="dificultad" name="dificultad" required>
+    </div>
+    <div class="form-group">
+        <label for="distancia">Distancia (km):</label>
+        <input type="number" class="form-control" id="distancia" name="distancia" required>
+    </div>
+    <div class="form-group">
+        <label for="desnivel">Desnivel (m):</label>
+        <input type="number" class="form-control" id="desnivel" name="desnivel" required>
+    </div>
+    <div class="form-group">
+        <label for="link">Enlace:</label>
+        <input type="url" class="form-control" id="link" name="link" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Ruta</button>
+</form>
+{% endblock %}

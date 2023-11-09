@@ -4,7 +4,6 @@
 
 {% block content %}
 <h2>Perfil de {{ account['username'] }}</h2>
-<h3>Tus datos:</h3>
 <div>
     <table>
         <tr>
@@ -17,4 +16,39 @@
         </tr>
     </table>
 </div>
+<div>
+    <a href="{{ url_for('add_route') }}" class="btn btn-primary">Agregar Nueva Ruta</a>
+    <br>
+    <br>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center">Nombre de la Ruta</th>
+                <th class="text-center">Dificultad</th>
+                <th class="text-center">Distancia (km)</th>
+                <th class="text-center">Desnivel (m)</th>
+                <th class="text-center">Acciones</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for route in routes %}
+            <tr>
+                <td class="text-center">{{ route.nombre }}</td>
+                <td class="text-center">{{ route.dificultad }}</td>
+                <td class="text-center">{{ route.distancia }}</td>
+                <td class="text-center">{{ route.desnivel }}</td>
+                <td class="text-center">
+                    <a href="{{ route.link }}" target="_blank" class="btn btn-success">Acceder</a>
+                    <form action="/delete_route" method="post" style="display: inline;">
+                        <input type="hidden" name="route_id" value="{{ route.id }}">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
 {% endblock %}

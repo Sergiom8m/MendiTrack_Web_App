@@ -23,7 +23,6 @@ mysql = MySQL(app)
 ### PAGINA DE LOGIN ###
 #######################
 
-
 @app.route('/', methods=['GET', 'POST'])
 def login():
 
@@ -66,7 +65,6 @@ def login():
 ### PAGINA DE LOGOUT ###
 ########################
 
-
 @app.route('/logout')
 def logout():
 
@@ -81,7 +79,6 @@ def logout():
 ##########################
 ### PAGINA DE REGISTRO ###
 ##########################
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -139,23 +136,19 @@ def register():
 ### PAGINA HOME ###
 ###################
 
-
 @app.route('/home')
 def home():
 
     # Comprobar si el usuario ha iniciado sesion
     if 'loggedin' in session:
 
-        # Obtener correo electronico del usuario registrado
-        user_email = session['email']
-
-        # Consultar la base de datos para obtener las rutas del usuario
+        # Consultar la base de datos para obtener las rutas publicas
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM rutas WHERE email = %s", (user_email,))
-        user_routes = cursor.fetchall()
+        cursor.execute("SELECT * FROM rutas")
+        public_routes = cursor.fetchall()
 
         # Si el usuario ha iniciado sesion mostrar el home page
-        return render_template('home.html', username=session['username'], routes = user_routes)
+        return render_template('home.html', routes = public_routes)
 
     # Si el usuario no ha iniciado sesion redireccionar a la pagina de login
     return redirect(url_for('login'))
@@ -164,23 +157,85 @@ def home():
 ### PAGINA USUARIO ###
 ######################
 
-
 @app.route('/profile')
 def profile():
     # Comprobar que el usuario haya iniciado sesion
     if 'loggedin' in session:
 
-        # Extraertoda la informacion del usuario de la DB
+        # Extraer toda la informacion del usuario de la DB
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
 
+        # Recoger el email del usuario de la session
+        user_email = session['email']
+
+        # Consultar la base de datos para obtener las rutas del usuario
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM rutas WHERE email = %s", (user_email,))
+        user_routes = cursor.fetchall()
+
         # Mostrar la pagina del usuario (pasarle la informacion)
-        return render_template('profile.html', account=account)
+        return render_template('profile.html', account=account, routes=user_routes)
 
     # Si el usuario no ha iniciado sesion redireccionar a la pagina de login
     return redirect(url_for('login'))
 
+############################
+### PAGINA ELIMINAR RUTA ###
+############################
+
+@app.route('/delete_route', methods=['POST'])
+def delete_route():
+
+    # Comprobar que el usuario haya iniciado sesion y haya pulsado el boton eliminar
+    if 'loggedin' in session:
+        if request.method == 'POST' and 'route_id' in request.form:
+
+            # Obtener el ID de la ruta a eliminar
+            route_id = request.form['route_id']
+
+            # Eliminar la ruta de la DB
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute("DELETE FROM rutas WHERE id = %s", (route_id,))
+            mysql.connection.commit()
+
+            # Redireccionar al usuario de vuelta a la página de inicio
+            return redirect(url_for('profile'))
+        
+    # Si el usuario no ha iniciado sesión redireccionar a la pagina de login
+    return redirect(url_for('login'))
+
+
+##########################
+### PAGINA AÑADIR RUTA ###
+##########################
+
+@app.route('/add_route', methods=['GET', 'POST'])
+def add_route():
+
+    if 'loggedin' in session:
+        if request.method == 'POST':
+            
+            # Obtener los datos del formulario enviado por el usuario
+            nombre = request.form['nombre']
+            dificultad = request.form['dificultad']
+            distancia = request.form['distancia']
+            desnivel = request.form['desnivel']
+            link = request.form['link']
+            email = session['email']
+
+            # Inserta los datos en la base de datos
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute(
+                'INSERT INTO rutas (nombre, dificultad, distancia, desnivel, link, email) VALUES (%s, %s, %s, %s, %s, %s)',
+                (nombre, dificultad, distancia, desnivel, link, email)
+            )
+            mysql.connection.commit()
+
+            return redirect(url_for('profile'))
+        return render_template('add_route.html')
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)

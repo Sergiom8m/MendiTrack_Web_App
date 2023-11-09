@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `rutas` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2;
 
 INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'root@root.com', 'bilabno', '1', '12', '12', 'https://www.ehu.eus');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'root@root.com', 'hola', '1', '12', '12', 'https://www.ehu.eus');
 
 
 
