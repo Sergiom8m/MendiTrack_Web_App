@@ -53,6 +53,7 @@ def login():
             session['loggedin'] = True
             session['id'] = account['id']
             session['username'] = account['username']
+            session['email'] = account['email']
             # Redirect to home page
             return redirect(url_for('home'))
         else:
@@ -144,8 +145,17 @@ def home():
 
     # Comprobar si el usuario ha iniciado sesion
     if 'loggedin' in session:
+
+        # Obtener correo electronico del usuario registrado
+        user_email = session['email']
+
+        # Consultar la base de datos para obtener las rutas del usuario
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM rutas WHERE email = %s", (user_email,))
+        user_routes = cursor.fetchall()
+
         # Si el usuario ha iniciado sesion mostrar el home page
-        return render_template('home.html', username=session['username'])
+        return render_template('home.html', username=session['username'], routes = user_routes)
 
     # Si el usuario no ha iniciado sesion redireccionar a la pagina de login
     return redirect(url_for('login'))
