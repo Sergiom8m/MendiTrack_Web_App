@@ -26,7 +26,6 @@ def hash_passw(password):
 def check_user_psswd():
 
     response = {'ok': False, 'data':None, 'error':''}
-    cursor = None
 
     # Recoger los datos de la peticion
     data = request.json

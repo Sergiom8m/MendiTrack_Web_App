@@ -3,26 +3,26 @@
 {% block title %}MendiTrack - Agregar Ruta{% endblock %}
 
 {% block content %}
-<h2>Agregar Nueva Ruta</h2>
+<h2>Agregar nueva ruta</h2>
 <form method="post">
     <div class="form-group">
-        <label for="nombre">Nombre de la Ruta:</label>
+        <label for="nombre">Nombre de la ruta:</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
     </div>
     <div class="form-group">
-        <label for="dificultad">Dificultad:</label>
-        <input type="number" class="form-control" id="dificultad" name="dificultad" required>
+        <label for="dificultad">Dificultad (1-10) :</label>
+        <input type="number" min="1" max="10" class="form-control" id="dificultad" name="dificultad" required>
     </div>
     <div class="form-group">
         <label for="distancia">Distancia (km):</label>
-        <input type="number" step="any" class="form-control" id="distancia" name="distancia" required>
+        <input type="number" min="0" step="any" class="form-control" id="distancia" name="distancia" required>
     </div>
     <div class="form-group">
         <label for="desnivel">Desnivel (m):</label>
-        <input type="number" step="any" class="form-control" id="desnivel" name="desnivel" required>
+        <input type="number" min="0" step="any" class="form-control" id="desnivel" name="desnivel" required>
     </div>
     <div class="form-group">
-        <label for="link">Enlace:</label>
+        <label for="link">Enlace a la ruta (Strava, Wikiloc...):</label>
         <input type="url" class="form-control" id="link" name="link" required>
     </div>
     <button type="submit" class="btn btn-primary">Guardar Ruta</button>

@@ -6,10 +6,7 @@ import logging
 
 # Crear el objeto Flask
 app = Flask(__name__)
-cursor = None
 app.secret_key = '1234567'
-# Configurar el nivel de log
-app.logger.setLevel(logging.DEBUG)
 
 
 #######################
@@ -95,13 +92,11 @@ def register():
         
         if response_check.get('ok'):
             if response_check.get('exists'):
-                msg = 'La cuenta ya existe, inicia sesión!'
+                msg = 'La cuenta ya existe, ¡Inicia sesión!'
             else:
                 response_register = register_user(username, password, email)
                 if response_register.get('ok'):
-                    msg = 'Te has registrado exitosamente!'
-                else:
-                    msg = response_register.get('error')
+                    msg = '¡Te has registrado exitosamente! Ahora inicia sesión'
         else:
             msg = 'Ha ocurrido un error, intentalo de nuevo'
 
