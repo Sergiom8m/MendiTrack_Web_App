@@ -9,8 +9,17 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - db
-    links:
+      - api
+
+  api: 
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    volumes:
+      - ./API:/app
+    ports:
+      - "5003:5003"
+    depends_on:
       - db
     environment:
       - MYSQL_HOST=db
@@ -24,8 +33,9 @@ services:
       MYSQL_DATABASE: appDb
     volumes:
       - ./appDb.sql:/docker-entrypoint-initdb.d/appDb.sql
+      - mysql_data:/var/lib/mysql
 
-      
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -36,3 +46,6 @@ services:
       - "8080:80"  # Mapea el puerto 8080 del host al puerto 80 de phpMyAdmin
     depends_on:
       - db
+
+volumes:
+  mysql_data:

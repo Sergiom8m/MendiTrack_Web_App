@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2;
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES (1, 'root', '02be4d57999261838cebe45ec83ba6c1beb1457a', 'root@root.com');
 
 CREATE TABLE IF NOT EXISTS `rutas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,8 +21,8 @@ CREATE TABLE IF NOT EXISTS `rutas` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2;
 
-INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'root@root.com', 'bilabno', '1', '12', '12', 'https://www.ehu.eus');
-INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'root@root.com', 'hola', '1', '12', '12', 'https://www.ehu.eus');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'sergiomartinportillo8@gmail.com', 'Faro del caballo', '4', '9.28', '624', 'https://www.strava.com/activities/10025666374');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'sergiomartinportillo8@gmail.com', 'Gallarraga desde La Quadra', '7', '13.68', '930', 'https://www.strava.com/activities/9271843453');
 
 
 

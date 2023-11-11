@@ -9,6 +9,7 @@
         <thead class="thead-dark">
             <tr>
                 <th class="text-center">Nombre de la Ruta</th>
+                <th class="text-center">Autor</th>
                 <th class="text-center">Dificultad</th>
                 <th class="text-center">Distancia (km)</th>
                 <th class="text-center">Desnivel (m)</th>
@@ -19,6 +20,7 @@
             {% for route in routes %}
             <tr>
                 <td class="text-center">{{ route.nombre }}</td>
+                <td class="text-center">{{ route.email }}</td>
                 <td class="text-center">{{ route.dificultad }}</td>
                 <td class="text-center">{{ route.distancia }}</td>
                 <td class="text-center">{{ route.desnivel }}</td>
