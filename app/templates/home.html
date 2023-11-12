@@ -25,7 +25,9 @@
                 <td class="text-center">{{ route.distancia }}</td>
                 <td class="text-center">{{ route.desnivel }}</td>
                 <td class="text-center">
+                    {% if route.link %}
                     <a href="{{ route.link }}" target="_blank" class="btn btn-success">Acceder</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
