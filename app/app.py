@@ -227,22 +227,24 @@ def add_route():
 
             # Obtener los datos del formulario enviado por el usuario
             nombre = request.form['nombre']
+            public = request.form.get('public', '0')
             dificultad = request.form['dificultad']
             distancia = request.form['distancia']
             desnivel = request.form['desnivel']
             link = request.form['link']
             email = session['email']
 
-            add_route(nombre, dificultad, distancia, desnivel, link, email)
+            add_route(nombre, public, dificultad, distancia, desnivel, link, email)
 
             return redirect(url_for('profile'))
         return render_template('add_route.html')
     return redirect(url_for('login'))
 
 
-def add_route(nombre, dificultad, distancia, desnivel, link, email):
+def add_route(nombre,public, dificultad, distancia, desnivel, link, email):
     data = {
         'nombre': nombre,
+        'public': public,
         'dificultad': dificultad,
         'distancia': distancia,
         'desnivel': desnivel,

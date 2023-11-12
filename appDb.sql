@@ -14,9 +14,10 @@ CREATE TABLE IF NOT EXISTS `rutas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `email` varchar(100) NOT NULL,
     `nombre` varchar(255) NOT NULL,
+    `public` BOOLEAN NOT NULL DEFAULT FALSE,
     `dificultad` int(11) NOT NULL,
     `distancia` double NOT NULL,
-    `desnivel` double NOT NULL,
+    `desnivel` int(11) NOT NULL,
     `link` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2;

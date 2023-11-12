@@ -24,6 +24,7 @@
         <thead class="thead-dark">
             <tr>
                 <th class="text-center">Nombre de la ruta</th>
+                <th class="text-center">Visibilidad</th>
                 <th class="text-center">Dificultad</th>
                 <th class="text-center">Distancia (km)</th>
                 <th class="text-center">Desnivel (m)</th>
@@ -34,6 +35,9 @@
             {% for route in routes %}
             <tr>
                 <td class="text-center">{{ route.nombre }}</td>
+                <td class="text-center">
+                    <i class="{{ 'fas fa-lock' if route.public == 0 else 'fas fa-lock-open' }}"></i>
+                </td>
                 <td class="text-center">{{ route.dificultad }}</td>
                 <td class="text-center">{{ route.distancia }}</td>
                 <td class="text-center">{{ route.desnivel }}</td>

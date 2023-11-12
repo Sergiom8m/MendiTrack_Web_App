@@ -128,7 +128,7 @@ def get_public_routes():
     try:
         # Consultar la base de datos para obtener las rutas publicas
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM rutas")
+        cursor.execute("SELECT * FROM rutas WHERE public = 1")
         public_routes = cursor.fetchall()
 
         response['data'] = public_routes
@@ -222,6 +222,7 @@ def add_route():
     # Recoger los datos de la peticion
     data = request.json
     nombre = data.get('nombre')
+    public = data.get('public')
     dificultad = data.get('dificultad')
     distancia = data.get('distancia')
     desnivel = data.get('desnivel')
@@ -232,8 +233,8 @@ def add_route():
         # Inserta los datos en la base de datos
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            'INSERT INTO rutas (nombre, dificultad, distancia, desnivel, link, email) VALUES (%s, %s, %s, %s, %s, %s)',
-            (nombre, dificultad, distancia, desnivel, link, email)
+            'INSERT INTO rutas (nombre, public, dificultad, distancia, desnivel, link, email) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+            (nombre, public, dificultad, distancia, desnivel, link, email)
         )
         mysql.connection.commit()
 
