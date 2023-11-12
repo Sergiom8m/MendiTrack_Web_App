@@ -17,7 +17,7 @@
     </table>
 </div>
 <div>
-    <a href="{{ url_for('add_route') }}" class="btn btn-primary">Agregar nueva ruta</a>
+    <a href="{{ url_for('add_route') }}" class="btn btn-primary btn-sm">Agregar nueva ruta</a>
     <br>
     <br>
     <table class="table">
@@ -43,6 +43,9 @@
                 <td class="text-center">{{ route.desnivel }}</td>
                 <td class="text-center">
                     <a href="{{ route.link }}" target="_blank" class="btn btn-success">Acceder</a>
+                    <form action="/edit_route/{{ route.id }}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-warning">Editar</button>
+                    </form>
                     <form action="/delete_route" method="post" style="display: inline;">
                         <input type="hidden" name="route_id" value="{{ route.id }}">
                         <button type="submit" class="btn btn-danger">Eliminar</button>

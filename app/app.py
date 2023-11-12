@@ -149,7 +149,6 @@ def get_public_routes():
 ### PAGINA USUARIO ###
 ######################
 
-
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
 
@@ -189,7 +188,6 @@ def get_user_routes(email):
 ##############################
 ### SERVICIO ELIMINAR RUTA ###
 ##############################
-
 
 @app.route('/delete_route', methods=['POST'])
 def delete_route():
@@ -252,6 +250,53 @@ def add_route(nombre,public, dificultad, distancia, desnivel, link, email):
         'email': email
     }
     requests.post('http://api:5003/add_route', json=data)
+
+#############################
+### SERVICIO EDITAR RUTA ###
+#############################
+
+@app.route('/edit_route/<int:route_id>', methods=['GET', 'POST'])
+def edit_route(route_id):
+
+    if 'loggedin' in session:
+        if request.method == 'POST':
+
+            nombre = request.form['nombre']
+            dificultad = request.form['dificultad']
+            distancia = request.form['distancia']
+            desnivel = request.form['desnivel']
+            link = request.form['link']
+            public = request.form['public']
+
+            update_route(route_id, nombre, dificultad, distancia, desnivel, link, public)
+            return redirect(url_for('profile'))
+
+        response_route_info = get_route_info(route_id)
+
+        if response_route_info.get('ok'):
+
+            route_info = response_route_info.get('data')
+            return render_template('edit_route.html', route=route_info)
+        
+
+    return redirect(url_for('login'))
+
+def get_route_info(route_id):
+    data = {'route_id': route_id}
+    response = requests.get('http://api:5003/get_route_info', json=data)
+    return response.json()
+
+def update_route(route_id, nombre, dificultad, distancia, desnivel, link, public):
+    data = {
+        'route_id': route_id,
+        'nombre': nombre,
+        'dificultad': dificultad,
+        'distancia': distancia,
+        'desnivel': desnivel,
+        'link': link,
+        'public': public
+    }
+    requests.post('http://api:5003/update_route', json=data)
 
 
 if __name__ == "__main__":

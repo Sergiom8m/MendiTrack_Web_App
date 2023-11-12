@@ -166,6 +166,33 @@ def get_user_info():
 
     return response
 
+@app.route('/get_route_info', methods=['GET'])
+def get_route_info():
+
+    response = {'ok': True}
+
+    data = request.json
+    route_id = data.get('route_id')
+
+    try:
+        # Extraer toda la informacion del usuario de la DB
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM rutas WHERE id = %s', (route_id,))
+        route = cursor.fetchone()
+
+        if route:
+            response['data'] = route
+    
+    except:
+        response = {'ok': False}
+
+    finally:
+        cursor.close()
+
+    return response
+
+
+
 @app.route('/get_user_routes', methods=['GET'])
 def get_user_routes():
 
@@ -244,6 +271,39 @@ def add_route():
     finally:
         cursor.close()
     
+    return response
+
+@app.route('/update_route', methods=['POST'])
+def update_route():
+    response = {'ok': False, 'error': ''}
+
+    data = request.json
+    route_id = data.get('route_id')
+    nombre = data.get('nombre')
+    dificultad = data.get('dificultad')
+    distancia = data.get('distancia')
+    desnivel = data.get('desnivel')
+    link = data.get('link')
+    public = data.get('public')
+
+    try:
+        # Actualizar la ruta en la base de datos
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("""
+            UPDATE rutas 
+            SET nombre=%s, dificultad=%s, distancia=%s, desnivel=%s, link=%s, public=%s
+            WHERE id=%s
+        """, (nombre, dificultad, distancia, desnivel, link, public, route_id))
+        mysql.connection.commit()
+
+        response['ok'] = True
+
+    except Exception as e:
+        response['error'] = str(e)
+
+    finally:
+        cursor.close()
+
     return response
 
 if __name__ == "__main__":
