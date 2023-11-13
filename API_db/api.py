@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request, session, jsonify
+from flask import Flask, render_template, redirect, url_for, request
+from secrets import SECRET_APP_KEY, MYSQL_PASSWORD
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import MySQLdb.cursors
@@ -6,11 +7,11 @@ import hashlib
 
 app = Flask(__name__)
 
-app.secret_key = '1234567'
+app.secret_key = SECRET_APP_KEY
 
 app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'sysadminEHU'
+app.config['MYSQL_PASSWORD'] = MYSQL_PASSWORD
 app.config['MYSQL_DB'] = 'appDb'
 
 mysql = MySQL(app)
@@ -61,19 +62,20 @@ def check_user_psswd():
     return response
 
 
-@app.route('/check_user', methods=['POST'])
-def check_user():
+@app.route('/check_user_email', methods=['POST'])
+def check_user_email():
 
     response = {'ok': True, 'exist': False, 'error':''}
 
     # Recoger los datos de la peticion
     data = request.json
     username = data.get('username')
+    email = data.get('email')
 
     try:
         # Comprobar si el usuario ya ha sido registrado previamente
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        cursor.execute('SELECT * FROM users WHERE username = %s OR email = %s', (username, email,))
         account = cursor.fetchone()
 
         if account:

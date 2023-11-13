@@ -9,7 +9,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
     ports:
       - "80:80"
-      - "8080:8080"  # Puedes acceder al dashboard de Traefik en http://localhost:8080
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -26,25 +26,29 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - api
+      - api_db
+      - api_emails
 
-  api: 
+  api_db: 
     build:
-      context: ./API
+      context: ./API_db
       dockerfile: Dockerfile
     volumes:
-      - ./API:/app
-    ports:
-      - "5003:5003"
+      - ./API_db:/app
     depends_on:
       - db
     environment:
       - MYSQL_HOST=db
 
+  api_emails:
+    build:
+      context: ./API_emails
+      dockerfile: Dockerfile
+    volumes:
+      - ./API_emails:/app
+
   db:
-    image: mysql:latest  # Utiliza la imagen oficial de MySQL
-    ports:
-      - "3306:3306"  # Mapea el puerto 3306 del contenedor MySQL al puerto 3306 del host
+    image: mysql:latest 
     environment:
       MYSQL_ROOT_PASSWORD: sysadminEHU
       MYSQL_DATABASE: appDb
@@ -52,15 +56,14 @@ services:
       - ./appDb.sql:/docker-entrypoint-initdb.d/appDb.sql
       - mysql_data:/var/lib/mysql
 
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      PMA_HOST: db  # Configura el host de MySQL para phpMyAdmin
+      PMA_HOST: db  
       PMA_ARBITRARY: 1
     ports:
-      - "8081:80"  # Mapea el puerto 8080 del host al puerto 80 de phpMyAdmin
+      - "8081:80"  
     depends_on:
       - db
 

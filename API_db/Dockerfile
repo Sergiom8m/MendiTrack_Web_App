@@ -6,6 +6,6 @@ COPY . /app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 5003
 
-CMD ["python", "-u", "api.py"]
+CMD ["python", "api.py"]

@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   	`username` varchar(50) NOT NULL,
   	`password` varchar(255) NOT NULL,
   	`email` varchar(100) NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE(`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2;
 
 
