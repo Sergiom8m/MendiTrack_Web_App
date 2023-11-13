@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-from secrets import SECRET_APP_KEY, MYSQL_PASSWORD
+from config import SECRET_APP_KEY, MYSQL_PASSWORD
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import MySQLdb.cursors

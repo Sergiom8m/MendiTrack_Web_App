@@ -2,7 +2,7 @@ from flask import Flask, request
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from secrets import GMAIL_USER, GMAIL_PASSWORD, SECRET_APP_KEY
+from config import GMAIL_USER, GMAIL_PASSWORD, SECRET_APP_KEY
 
 
 app = Flask(__name__)

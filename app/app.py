@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, session
 from flask_session import Session
 import requests
 from datetime import timedelta
-from secrets import SECRET_APP_KEY
+from config import SECRET_APP_KEY
 
 
 # Crear el objeto Flask
