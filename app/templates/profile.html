@@ -44,8 +44,6 @@
                 <td class="text-center">
                     {% if route.link %}
                     <a href="{{ route.link }}" target="_blank" class="btn btn-success">Acceder</a>
-                    {% else %}
-                    <button class="btn btn-success" disabled>No disponible</button>
                     {% endif %}
                     <form action="/edit_route/{{ route.id }}" method="get" style="display: inline;">
                         <button type="submit" class="btn btn-warning">Editar</button>

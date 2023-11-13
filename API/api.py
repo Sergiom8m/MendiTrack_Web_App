@@ -10,7 +10,7 @@ app.secret_key = '1234567'
 
 app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'sysadminEHU'
 app.config['MYSQL_DB'] = 'appDb'
 
 mysql = MySQL(app)

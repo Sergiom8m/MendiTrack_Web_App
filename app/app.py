@@ -1,13 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, request, session
+from flask_session import Session
 import requests
-import json
-import logging
+from datetime import timedelta
 
 
 # Crear el objeto Flask
 app = Flask(__name__)
 app.secret_key = '1234567'
 
+app.permanent_session_lifetime = timedelta(minutes=1)
 
 #######################
 ### PAGINA DE LOGIN ###
@@ -28,6 +29,9 @@ def login():
         response = check_user_psswd(username, password)
 
         if response.get('ok'):
+
+            session.permanent = True
+
             data = response.get('data')
 
             # Añadir la informacion a la sesion (accesible desde otras rutas)
@@ -298,6 +302,9 @@ def update_route(route_id, nombre, dificultad, distancia, desnivel, link, public
     }
     requests.post('http://api:5003/update_route', json=data)
 
+@app.route('/forum')
+def forum():
+    return render_template('forum.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
