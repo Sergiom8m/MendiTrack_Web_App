@@ -23,8 +23,6 @@ services:
       - "traefik.http.services.app.loadbalancer.server.port=5000"
     volumes:
       - ./app:/app
-    ports:
-      - "5000:5000"
     depends_on:
       - api_db
       - api_emails
@@ -69,3 +67,4 @@ services:
 
 volumes:
   mysql_data:
+  mongo_data:

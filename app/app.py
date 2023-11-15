@@ -1,15 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, request, session
-from flask_session import Session
+import paho.mqtt.client as mqtt
 import requests
 from datetime import timedelta
 from config import SECRET_APP_KEY
 
 
-# Crear el objeto Flask
 app = Flask(__name__)
 app.secret_key = SECRET_APP_KEY
-
 app.permanent_session_lifetime = timedelta(minutes=1)
+
 
 #######################
 ### PAGINA DE LOGIN ###
