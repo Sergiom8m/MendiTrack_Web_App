@@ -1,5 +1,19 @@
-version: '3'
+version: "3.9"
 services:
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "sysadminEHU"
+      MYSQL_DATABASE: "appDb"
+    volumes:
+      - ./appDb.sql:/docker-entrypoint-initdb.d/appDb.sql
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppass"]
+      interval: 30s
+      timeout: 5s
+      retries: 20
 
   traefik:
     image: "traefik:v2.5"
@@ -14,57 +28,47 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   app:
-    build: 
-      context: ./app
-      dockerfile: Dockerfile
+    build: ./app
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`localhost`)" 
+      - "traefik.http.routers.app.rule=Host(`34.68.203.234`)" 
       - "traefik.http.services.app.loadbalancer.server.port=5000"
     volumes:
       - ./app:/app
     depends_on:
       - api_db
-      - api_emails
 
-  api_db: 
-    build:
-      context: ./API_db
-      dockerfile: Dockerfile
+
+  api_db:
+    build: ./API_db
     volumes:
-      - ./API_db:/app
+      - ./API_db:/API_db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - MYSQL_HOST=db
 
-  api_emails:
-    build:
-      context: ./API_emails
-      dockerfile: Dockerfile
-    volumes:
-      - ./API_emails:/app
 
-  db:
-    image: mysql:latest 
-    environment:
-      MYSQL_ROOT_PASSWORD: sysadminEHU
-      MYSQL_DATABASE: appDb
+  api_emails:
+    build: ./API_emails
     volumes:
-      - ./appDb.sql:/docker-entrypoint-initdb.d/appDb.sql
-      - mysql_data:/var/lib/mysql
+      - ./API_emails:/API_emails
+    depends_on:
+      - app
+
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      PMA_HOST: db  
+      PMA_HOST: db
       PMA_ARBITRARY: 1
     ports:
-      - "8081:80"  
+      - "8081:80"
     depends_on:
       - db
 
 volumes:
   mysql_data:
-  mongo_data:
+ 
