@@ -28,10 +28,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   app:
-    build: ./app
+    image: sergiom8m8/sistema_web_docker-app
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`34.68.203.234`)" 
+      - "traefik.http.routers.app.rule=Host(`localhost`)" 
       - "traefik.http.services.app.loadbalancer.server.port=5000"
     volumes:
       - ./app:/app
@@ -40,7 +40,7 @@ services:
 
 
   api_db:
-    build: ./API_db
+    image: sergiom8m8/sistema_web_docker-api_db
     volumes:
       - ./API_db:/API_db
     depends_on:
@@ -51,7 +51,7 @@ services:
 
 
   api_emails:
-    build: ./API_emails
+    image: sergiom8m8/sistema_web_docker-api_emails
     volumes:
       - ./API_emails:/API_emails
     depends_on:

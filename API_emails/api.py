@@ -4,19 +4,20 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from config import GMAIL_USER, GMAIL_PASSWORD, SECRET_APP_KEY
 
-
+# Crear y configurar la app
 app = Flask(__name__)
-
 app.secret_key = SECRET_APP_KEY
 
 
 @app.route('/send', methods=['POST'])
 def send_email():
      
+    # Recoger los datos de la peticion
     data = request.json
     username = data.get('username')
     email = data.get('email')
 
+    # Definir el cuerpo del correo
     subject = "MENDITRACK - CONFIRMACION DE REGISTRO"
     html_body = """
     <html>
@@ -52,4 +53,4 @@ def send_email():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5002)
+    app.run(host='0.0.0.0', port=5002)

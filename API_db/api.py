@@ -1,14 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, request
 from config import SECRET_APP_KEY, MYSQL_PASSWORD
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import MySQLdb.cursors
 import hashlib
 
+# Crear y configurar la app
 app = Flask(__name__)
-
 app.secret_key = SECRET_APP_KEY
 
+# Configurar la conexion a la base de datos
 app.config['MYSQL_HOST'] = 'db'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = MYSQL_PASSWORD
@@ -16,9 +17,11 @@ app.config['MYSQL_DB'] = 'appDb'
 
 mysql = MySQL(app)
 
+
+# Funcion para hashear contraseñas
 def hash_passw(password):
     hash = password + app.secret_key
-    hash = hashlib.sha1(hash.encode())
+    hash = hashlib.sha384(hash.encode())
     password = hash.hexdigest()
     return password
 
@@ -26,6 +29,7 @@ def hash_passw(password):
 @app.route('/check_user_psswd', methods=['POST'])
 def check_user_psswd():
 
+    # Inicializar el JSON de respuesta
     response = {'ok': False, 'data':None, 'error':''}
 
     # Recoger los datos de la peticion
@@ -37,11 +41,12 @@ def check_user_psswd():
     password = hash_passw(password)
 
     try:
-    # Comprobar si la cuenta existe en la base de datos
+    # Comprobar si la cuenta existe en la DB
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password,))
         account = cursor.fetchone()
 
+        # Si la cuenta existe añadir al JSON los datos del usuario
         if account:
             response['ok'] = True
             response['data'] = {
@@ -65,6 +70,7 @@ def check_user_psswd():
 @app.route('/check_user_email', methods=['POST'])
 def check_user_email():
 
+    # Inicializar el JSON de respuesta
     response = {'ok': True, 'exist': False, 'error':''}
 
     # Recoger los datos de la peticion
@@ -78,6 +84,7 @@ def check_user_email():
         cursor.execute('SELECT * FROM users WHERE username = %s OR email = %s', (username, email,))
         account = cursor.fetchone()
 
+        # Actualizar el JSON con la infromacion de la existencia del usuario
         if account:
             response['exists'] = True
         else:
@@ -95,7 +102,8 @@ def check_user_email():
 @app.route('/register_user', methods=['POST'])
 def register_user():
 
-    response = {'ok': True, 'error': ''}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
 
     # Recoger los datos de la peticion
     data = request.json
@@ -125,18 +133,21 @@ def register_user():
 @app.route('/get_public_routes', methods=['GET'])
 def get_public_routes():
 
-    response = {'ok': True, 'data': None}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'data': None, 'error':''}
     
     try:
-        # Consultar la base de datos para obtener las rutas publicas
+        # Consultar la DB para obtener las rutas publicas
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute("SELECT * FROM rutas WHERE public = 1")
         public_routes = cursor.fetchall()
 
+        # Añadir las rutas publicas en el JSON
         response['data'] = public_routes
 
-    except:
+    except Exception as e:
         response['ok'] = False
+        response['error'] = str(e)
 
     finally:
         cursor.close()
@@ -146,8 +157,10 @@ def get_public_routes():
 @app.route('/get_user_info', methods=['GET'])
 def get_user_info():
 
-    response = {'ok': True}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
 
+    # Recoger los datos de la peticion
     data = request.json
     username = data.get('username')
 
@@ -157,11 +170,13 @@ def get_user_info():
         cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
         account = cursor.fetchone()
 
+        # Si el usuario existe añadir la informacion de su cuenta en el JSON
         if account:
             response['data'] = account
     
-    except:
-        response = {'ok': False}
+    except Exception as e:
+        response['ok'] = False
+        response['error'] = str(e)
 
     finally:
         cursor.close()
@@ -171,22 +186,26 @@ def get_user_info():
 @app.route('/get_route_info', methods=['GET'])
 def get_route_info():
 
-    response = {'ok': True}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
 
+    # Recoger los datos de la peticion
     data = request.json
     route_id = data.get('route_id')
 
     try:
-        # Extraer toda la informacion del usuario de la DB
+        # Extraer toda la informacion de la ruta de la DB
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM rutas WHERE id = %s', (route_id,))
         route = cursor.fetchone()
 
+        # Si la ruta existe añadir toda su informacion en el JSON
         if route:
             response['data'] = route
     
-    except:
-        response = {'ok': False}
+    except Exception as e:
+        response['ok'] = False
+        response['error'] = str(e)
 
     finally:
         cursor.close()
@@ -198,22 +217,25 @@ def get_route_info():
 @app.route('/get_user_routes', methods=['GET'])
 def get_user_routes():
 
-    response = {'ok': True}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
     
     # Recoger los datos de la peticion
     data = request.json
     email = data.get('email')
     
     try:
-        # Consultar la base de datos para obtener las rutas del usuario
+        # Consultar la DB para obtener las rutas del usuario
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute("SELECT * FROM rutas WHERE email = %s", (email,))
         user_routes = cursor.fetchall()
 
+        # Añadir todas las rutas del usuario en el JSON
         response['data'] = user_routes
 
-    except:
+    except Exception as e:
         response['ok'] = False
+        response['error'] = str(e)
 
     finally:
         cursor.close()
@@ -223,7 +245,8 @@ def get_user_routes():
 @app.route('/delete_route', methods=['POST'])
 def delete_route():
 
-    response = {'ok': True}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
     
     # Recoger los datos de la peticion
     data = request.json
@@ -235,8 +258,9 @@ def delete_route():
         cursor.execute("DELETE FROM rutas WHERE id = %s", (route_id,))
         mysql.connection.commit()
 
-    except:
-        response = {'ok': False}
+    except Exception as e:
+        response['ok'] = False
+        response['error'] = str(e)
 
     finally:
         cursor.close()
@@ -246,7 +270,8 @@ def delete_route():
 @app.route('/add_route', methods=['POST'])
 def add_route():
 
-    response = {'ok': True}
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
     
     # Recoger los datos de la peticion
     data = request.json
@@ -259,7 +284,7 @@ def add_route():
     email = data.get('email')
 
     try:
-        # Inserta los datos en la base de datos
+        # Insertar los datos de la ruta en la DB
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
             'INSERT INTO rutas (nombre, public, dificultad, distancia, desnivel, link, email) VALUES (%s, %s, %s, %s, %s, %s, %s)',
@@ -267,8 +292,9 @@ def add_route():
         )
         mysql.connection.commit()
 
-    except:
-         response = {'ok': False}
+    except Exception as e:
+        response['ok'] = False
+        response['error'] = str(e)
         
     finally:
         cursor.close()
@@ -277,8 +303,11 @@ def add_route():
 
 @app.route('/update_route', methods=['POST'])
 def update_route():
-    response = {'ok': False, 'error': ''}
 
+    # Inicializar el JSON de respuesta
+    response = {'ok': True, 'error':''}
+
+    # Recoger los datos de la peticion
     data = request.json
     route_id = data.get('route_id')
     nombre = data.get('nombre')
@@ -289,7 +318,7 @@ def update_route():
     public = data.get('public')
 
     try:
-        # Actualizar la ruta en la base de datos
+        # Actualizar la ruta en la DB con los datos nuevos
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute("""
             UPDATE rutas 
@@ -298,9 +327,8 @@ def update_route():
         """, (nombre, dificultad, distancia, desnivel, link, public, route_id))
         mysql.connection.commit()
 
-        response['ok'] = True
-
     except Exception as e:
+        response['ok'] = False
         response['error'] = str(e)
 
     finally:
@@ -309,4 +337,4 @@ def update_route():
     return response
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, port=5003)
+    app.run(host='0.0.0.0', port=5003)
