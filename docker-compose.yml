@@ -26,6 +26,8 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - app
 
   app:
     image: sergiom8m8/sistema_web_docker-app
@@ -37,7 +39,7 @@ services:
       - ./app:/app
     depends_on:
       - api_db
-
+      - api_emails
 
   api_db:
     image: sergiom8m8/sistema_web_docker-api_db
@@ -49,15 +51,11 @@ services:
     environment:
       - MYSQL_HOST=db
 
-
   api_emails:
     image: sergiom8m8/sistema_web_docker-api_emails
     volumes:
       - ./API_emails:/API_emails
-    depends_on:
-      - app
-
-
+  
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
