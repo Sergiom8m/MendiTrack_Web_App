@@ -30,7 +30,8 @@ services:
       - app
 
   app:
-    image: sergiom8m8/sistema_web_docker-app
+    build: ./app
+    image: sergiom8m8/app
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`localhost`)" 
@@ -38,23 +39,25 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - api_db
-      - api_emails
+      - api-db
+      - api-emails
 
-  api_db:
-    image: sergiom8m8/sistema_web_docker-api_db
+  api-db:
+    build: ./api-db
+    image: sergiom8m8/api-db
     volumes:
-      - ./API_db:/API_db
+      - ./API-db:/API-db
     depends_on:
       db:
         condition: service_healthy
     environment:
       - MYSQL_HOST=db
 
-  api_emails:
-    image: sergiom8m8/sistema_web_docker-api_emails
+  api-emails:
+    build: ./api-emails
+    image: sergiom8m8/api-emails
     volumes:
-      - ./API_emails:/API_emails
+      - ./API-emails:/API-emails
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

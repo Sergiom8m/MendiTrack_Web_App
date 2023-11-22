@@ -6,7 +6,7 @@ from config import SECRET_APP_KEY
 # Crear la aplicacion y establecer la configuracion
 app = Flask(__name__)
 app.secret_key = SECRET_APP_KEY
-app.permanent_session_lifetime = timedelta(minutes=1)
+app.permanent_session_lifetime = timedelta(minutes=3)
 
 
 #######################
@@ -53,7 +53,7 @@ def login():
 
 def check_user_psswd(username, password):
 
-    url = "http://api_db:5003/check_user_psswd"
+    url = "http://api-db:5003/check_user_psswd"
     data = {'username': username, 'password': password}
     response = requests.post(url, json=data)
 
@@ -109,7 +109,7 @@ def register():
                     
                     # Si el registro ha sido correcto enviar un email de confirmacion
                     msg = '¡Te has registrado exitosamente! Ahora inicia sesión'
-                    requests.post('http://api_emails:5002/send', json={'username': username, 'email': email})
+                    requests.post('http://api-emails:5002/send', json={'username': username, 'email': email})
         else:
             msg = 'Ha ocurrido un error, intentalo de nuevo'
 
@@ -118,13 +118,13 @@ def register():
 
 def check_user_email(username, email):
     data = {'username': username, 'email':email}
-    response = requests.post('http://api_db:5003/check_user_email', json=data)
+    response = requests.post('http://api-db:5003/check_user_email', json=data)
     return response.json()
 
 
 def register_user(username, password, email):
     data = {'username': username, 'password': password, 'email': email}
-    response = requests.post('http://api_db:5003/register_user', json=data)
+    response = requests.post('http://api-db:5003/register_user', json=data)
     return response.json()
 
 
@@ -152,7 +152,7 @@ def home():
 
 
 def get_public_routes():
-    response = requests.get('http://api_db:5003/get_public_routes')
+    response = requests.get('http://api-db:5003/get_public_routes')
     if response.status_code == 200:
         return response.json()
     else:
@@ -191,13 +191,13 @@ def profile():
 
 def get_user_info(username):
     data = {'username': username}
-    response = requests.get('http://api_db:5003/get_user_info', json=data)
+    response = requests.get('http://api-db:5003/get_user_info', json=data)
     return response.json()
     
 
 def get_user_routes(email):
     data = {'email': email}
-    response = requests.get('http://api_db:5003/get_user_routes', json=data)
+    response = requests.get('http://api-db:5003/get_user_routes', json=data)
     return response.json()
     
 ##############################
@@ -226,7 +226,7 @@ def delete_route():
 
 def delete_route(route_id):
     data = {'route_id': route_id}
-    requests.post('http://api_db:5003/delete_route', json=data)
+    requests.post('http://api-db:5003/delete_route', json=data)
 
 
 ##########################
@@ -267,7 +267,7 @@ def add_route(nombre,public, dificultad, distancia, desnivel, link, email):
         'link': link,
         'email': email
     }
-    requests.post('http://api_db:5003/add_route', json=data)
+    requests.post('http://api-db:5003/add_route', json=data)
 
 #############################
 ### SERVICIO EDITAR RUTA ###
@@ -306,7 +306,7 @@ def edit_route(route_id):
 
 def get_route_info(route_id):
     data = {'route_id': route_id}
-    response = requests.get('http://api_db:5003/get_route_info', json=data)
+    response = requests.get('http://api-db:5003/get_route_info', json=data)
     return response.json()
 
 def update_route(route_id, nombre, dificultad, distancia, desnivel, link, public):
@@ -319,7 +319,7 @@ def update_route(route_id, nombre, dificultad, distancia, desnivel, link, public
         'link': link,
         'public': public
     }
-    requests.post('http://api_db:5003/update_route', json=data)
+    requests.post('http://api-db:5003/update_route', json=data)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

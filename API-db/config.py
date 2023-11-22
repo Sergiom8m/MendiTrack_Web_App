@@ -1,0 +1,2 @@
+MYSQL_PASSWORD = 'sysadminEHU'
+SECRET_APP_KEY = 'qdnfbwer71234bu'

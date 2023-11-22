@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appdb-script
+data:
+  appDb.sql: |
+
+    CREATE DATABASE IF NOT EXISTS `appDb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+    USE `appDb`;
+
+    CREATE TABLE IF NOT EXISTS `users` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+        `username` varchar(50) NOT NULL,
+        `password` varchar(255) NOT NULL,
+        `email` varchar(100) NOT NULL,
+        PRIMARY KEY (`id`),
+        UNIQUE(`email`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2;
+
+
+    CREATE TABLE IF NOT EXISTS `rutas` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `email` varchar(100) NOT NULL,
+        `nombre` varchar(255) NOT NULL,
+        `public` BOOLEAN NOT NULL DEFAULT FALSE,
+        `dificultad` int(11) NOT NULL,
+        `distancia` double NOT NULL,
+        `desnivel` int(11) NOT NULL,
+        `link` varchar(255) NOT NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2;
+
+    INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'sergiomartinportillo8@gmail.com', 'Faro del caballo', '4', '9.28', '624', 'https://www.strava.com/activities/10025666374');
+    INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'sergiomartinportillo8@gmail.com', 'Gallarraga desde La Quadra', '7', '13.68', '930', 'https://www.strava.com/activities/9271843453');
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: db
+
+  template:
+
+    metadata:
+      labels:
+        component: db
+        
+    spec:
+      containers:
+        - name: db
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "sysadminEHU"
+            - name: MYSQL_DATABASE
+              value: "appDb"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: appdb-script
+
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: db
+
+spec:
+  type: ClusterIP
+  selector:
+    component: db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
