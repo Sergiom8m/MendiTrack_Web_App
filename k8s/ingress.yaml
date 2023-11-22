@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+
+spec:
+  rules:
+    - host: hello.127.0.0.1.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: app
+                port:
+                  number: 5000
+
+
+

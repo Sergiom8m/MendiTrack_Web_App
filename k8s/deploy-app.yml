@@ -32,9 +32,9 @@ metadata:
   name: app
 
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     component: app
   ports:
-  - port: 5000
+  - port: 5000  
     targetPort: 5000  
