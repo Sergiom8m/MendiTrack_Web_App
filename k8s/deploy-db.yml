@@ -35,6 +35,19 @@ data:
 
 ---
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -50,7 +63,7 @@ spec:
     metadata:
       labels:
         component: db
-        
+      
     spec:
       containers:
         - name: db
@@ -63,9 +76,19 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
+       
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+
             - name: mysql-initdb
               mountPath: /docker-entrypoint-initdb.d
+
       volumes:
+       
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+              
         - name: mysql-initdb
           configMap:
             name: appdb-script
@@ -86,3 +109,4 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+

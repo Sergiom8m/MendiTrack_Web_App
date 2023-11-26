@@ -39,7 +39,7 @@ metadata:
   name: phpmyadmin
 
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     component: phpmyadmin
   ports:

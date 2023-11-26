@@ -36,8 +36,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`localhost`)" 
       - "traefik.http.services.app.loadbalancer.server.port=5000"
-    volumes:
-      - ./app:/app
     depends_on:
       - api-db
       - api-emails
@@ -45,8 +43,6 @@ services:
   api-db:
     build: ./api-db
     image: sergiom8m8/api-db
-    volumes:
-      - ./API-db:/API-db
     depends_on:
       db:
         condition: service_healthy
@@ -56,8 +52,6 @@ services:
   api-emails:
     build: ./api-emails
     image: sergiom8m8/api-emails
-    volumes:
-      - ./API-emails:/API-emails
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
