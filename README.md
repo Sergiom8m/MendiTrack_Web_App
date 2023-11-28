@@ -14,7 +14,7 @@ git clone https://github.com/Sergiom8m/Sistema_Web_Docker
 
 Para desplegar la aplicación utilizando _docker_ se debe de tener instalada dicha aplicación con su correspondiente complemento si fuese necesario para hacer uso se _docker compose_.
 
-### PASO 1: Adaptar los ficheros de configuración
+#### PASO 1: Adaptar los ficheros de configuración
 
 Para que la aplicacion funcione correctamente se deben editar varios ficheros de configuración.
 
@@ -34,7 +34,7 @@ Para que la aplicacion funcione correctamente se deben editar varios ficheros de
 
 Realizadas estas modificaciones en los archivos de configuración la aplicacion esta lista para desplegarse.
 
-### PASO 2: Poner en marcha la aplicación
+#### PASO 2: Poner en marcha la aplicación
 
 Para poner en marcha la aplicacion ejecutar el siguiente comando desde el directorio general del repositorio (contiene el fichero `docker-compose.yml`):
 
@@ -44,7 +44,7 @@ docker compose up -d
 
 Tras una breve espera se observará que los contenedores estan en marcha, entonces la aplicacion estara en marcha y lista para ser usada.
 
-### PASO 3: Acceder a la aplicación desde el navegador
+#### PASO 3: Acceder a la aplicación desde el navegador
 
 La aplicacion esta preparada para servirse en el puerto 80, por lo tanto con acceder a la IP del servidor donde se ejecuta desde el navegador web seria suficiente para empezar a usar la aplicacion. 
 
@@ -56,7 +56,7 @@ Si se esta desplegando la aplicacion en un entorno local con acceder a `localhos
 
 La configuracion contenida en este repositorio esta dirigida a desplegarse con `Kubernetes Engine` de Google. Puede que el despliegue con otro motor de _kubernetes_ requiera de pequeñas modificaciones en la configuracion.
 
-### PASO 1: Adaptar de los ficheros de configuracion
+#### PASO 1: Adaptar de los ficheros de configuracion
 
 En el despliegue con _kubernetes_ se usan las imagenes previamente creadas y alojadas en `DockerHub`:
 
@@ -66,7 +66,7 @@ En el despliegue con _kubernetes_ se usan las imagenes previamente creadas y alo
 
 Por ello, el despliegue con _kubernetes_ no acepta modificaciones en la configuracion. Si se desease cambiar la configuracion seria necesario modificar las imagenes.
 
-### PASO 2: Poner en marcha la aplicacion:
+#### PASO 2: Poner en marcha la aplicacion:
 
 Para desplegar la aplicacion se debe ejecutar el siguiente comando desde el directorio `/k8s` del repositorio.
 
@@ -74,7 +74,7 @@ Para desplegar la aplicacion se debe ejecutar el siguiente comando desde el dire
 kubectl -f apply .
 ```
 
-### PASO 3: Acceder a la aplicación desde el navegador
+#### PASO 3: Acceder a la aplicación desde el navegador
 
 Para acceder a la aplicacion es suficiente con acceder desde el navegador a la IP del cluster de _kubernetes_ en la ruta `/` o cualquier otra que cuelgue de ese _path_.
 
