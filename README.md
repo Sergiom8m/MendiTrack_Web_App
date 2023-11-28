@@ -77,3 +77,7 @@ kubectl -f apply .
 ### PASO 3: Acceder a la aplicación desde el navegador
 
 Para acceder a la aplicacion es suficiente con acceder desde el navegador a la IP del cluster de _kubernetes_ en la ruta `/` o cualquier otra que cuelgue de ese _path_.
+
+Por ejemplo: \
+\
+`http://34.125.431.26/`
