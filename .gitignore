@@ -1,5 +1,5 @@
 venv/
-API_emails/config.py
-API_db/config.py
+API-emails/config.py
+API-db/config.py
 app/config.py
 

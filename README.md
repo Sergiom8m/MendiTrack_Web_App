@@ -18,15 +18,38 @@ Para desplegar la aplicación utilizando _docker_ se debe de tener instalada dic
 
 Para que la aplicacion funcione correctamente se deben editar varios ficheros de configuración.
 
+
 1. En el fichero 'docker-compose.yml':
+    
     - Localizar el servicio 'app'
-    - En el apartado 'labels', se debe modificar la segunda etiqueta ('traefik.http.routers.app.rule=Host(`localhost`)')
+    - En el apartado 'labels', se debe modificar la segunda etiqueta: `traefik.http.routers.app.rule=Host(localhost)`. Donde indica `localhost` se debe poner la dirección IP del sevidor donde se vaya a servir la aplicacion. En caso de ejecutarlo de manera local no se debe modificar esta etiqueta.
 
-### PASO 2: Situarse en el directorio general del repositorio (ubicación del archivo docker-compose.yaml)
+2. En el directorio `API-db`, en el fichero `config.py`:
+    
+    - La clave `MYSQL_PASSWORD` se puede modificar si se desea cambiar la clave del usuario `root` de la base de datos.
+    - En caso de cambiar la contraseña se debe modificar tambien la clave `MYSQL_ROOT_PASSWORD` en el servicio `db` del fichero `docker_compose.yml` 
 
-### PASO 3: Poner en marcha la aplicación
+3. En el directorio `API-emails`, en el fichero `config.py`:
 
-### PASO 4: Acceder a la aplicación desde el navegador
+    - Las claves `GMAIL_USER` y `GMAIL_PASSWORD` deberian contener el email y la contraseña de aplicacion del servicio de correo electronico de la persona que gestiona la aplicacion. 
 
+
+Realizadas estas modificaciones en los archivos de configuración la aplicacion esta lista para desplegarse.
+
+### PASO 2: Poner en marcha la aplicación
+
+Para poner en marcha la aplicacion ejecutar el siguiente comando desde el directorio general del repositorio (contiene el fichero `docker-compose.yml`):
+
+```bash
+docker compose up -d
+```
+
+Tras una breve espera se observará que los contenedores estan en marcha, entonces la aplicacion estara en marcha y lista para ser usada.
+
+### PASO 3: Acceder a la aplicación desde el navegador
+
+La aplicacion esta preparada para servirse en el puerto 80, por lo tanto con acceder a la IP del servidor donde se ejecuta desde el navegador web seria suficiente para empezar a usar la aplicacion. 
+
+Si se esta desplegando la aplicacion en un entorno local con acceder a `localhost` seria suficiente.
 
 ## OPCION 2:Puesta en marcha empleando _kubernetes_
