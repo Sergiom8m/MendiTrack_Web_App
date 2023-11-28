@@ -18,7 +18,6 @@ Para desplegar la aplicación utilizando _docker_ se debe de tener instalada dic
 
 Para que la aplicacion funcione correctamente se deben editar varios ficheros de configuración.
 
-
 1. En el fichero 'docker-compose.yml':
     
     - Localizar el servicio 'app'
@@ -26,13 +25,12 @@ Para que la aplicacion funcione correctamente se deben editar varios ficheros de
 
 2. En el directorio `API-db`, en el fichero `config.py`:
     
-    - La clave `MYSQL_PASSWORD` se puede modificar si se desea cambiar la clave del usuario `root` de la base de datos.
+    - La clave `MYSQL_PASSWORD` se puede modificar si se desea cambiar la clave del usuario `root` de la base de datos. La clave por defecto es `sysadminEHU`
     - En caso de cambiar la contraseña se debe modificar tambien la clave `MYSQL_ROOT_PASSWORD` en el servicio `db` del fichero `docker_compose.yml` 
 
 3. En el directorio `API-emails`, en el fichero `config.py`:
 
     - Las claves `GMAIL_USER` y `GMAIL_PASSWORD` deberian contener el email y la contraseña de aplicacion del servicio de correo electronico de la persona que gestiona la aplicacion. 
-
 
 Realizadas estas modificaciones en los archivos de configuración la aplicacion esta lista para desplegarse.
 
@@ -52,4 +50,27 @@ La aplicacion esta preparada para servirse en el puerto 80, por lo tanto con acc
 
 Si se esta desplegando la aplicacion en un entorno local con acceder a `localhost` seria suficiente.
 
-## OPCION 2:Puesta en marcha empleando _kubernetes_
+
+
+## OPCION 2: Puesta en marcha empleando _kubernetes_
+
+La configuracion contenida en este repositorio esta dirigida a desplegarse con `Kubernetes Engine` de Google. Puede que el despliegue con otro motor de _kubernetes_ requiera de pequeñas modificaciones en la configuracion.
+
+### PASO 1: Adaptar de los ficheros de configuracion
+
+En el despliegue con _kubernetes_ se usan las imagenes previamente creadas y alojadas en `DockerHub`:
+
+[https://hub.docker.com/repository/docker/sergiom8m8/app/general](imagen app)
+[https://hub.docker.com/repository/docker/sergiom8m8/api-emails/general](api emails)
+[https://hub.docker.com/repository/docker/sergiom8m8/api-db/general](api db)
+
+Por ello, el despliegue con _kubernetes_ no acepta modificaciones en la configuracion. Si se desease cambiar la configuracion seria necesario modificar las imagenes.
+
+### PASO 2: Poner en marcha la aplicacion:
+
+Para desplegar la aplicacion se debe ejecutar el siguiente comando desde el directorio `k8s` del repositorio.
+
+```bash
+kubectl -f apply .
+```
+
