@@ -60,9 +60,9 @@ La configuracion contenida en este repositorio esta dirigida a desplegarse con `
 
 En el despliegue con _kubernetes_ se usan las imagenes previamente creadas y alojadas en `DockerHub`:
 
-[https://hub.docker.com/repository/docker/sergiom8m8/app/general](app)
-[https://hub.docker.com/repository/docker/sergiom8m8/api-emails/general](api-emails)
-[https://hub.docker.com/repository/docker/sergiom8m8/api-db/general](api-db)
+[Imagen app](https://hub.docker.com/repository/docker/sergiom8m8/app/general)
+[Imagen api-emails](https://hub.docker.com/repository/docker/sergiom8m8/api-emails/general)
+[Imagen api-db](https://hub.docker.com/repository/docker/sergiom8m8/api-db/general)
 
 Por ello, el despliegue con _kubernetes_ no acepta modificaciones en la configuracion. Si se desease cambiar la configuracion seria necesario modificar las imagenes.
 
