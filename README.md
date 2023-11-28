@@ -18,17 +18,17 @@ Para desplegar la aplicación utilizando _docker_ se debe de tener instalada dic
 
 Para que la aplicacion funcione correctamente se deben editar varios ficheros de configuración.
 
-1. En el fichero 'docker-compose.yml':
+1. En el fichero `/docker-compose.yml`:
     
     - Localizar el servicio 'app'
     - En el apartado 'labels', se debe modificar la segunda etiqueta: `traefik.http.routers.app.rule=Host(localhost)`. Donde indica `localhost` se debe poner la dirección IP del sevidor donde se vaya a servir la aplicacion. En caso de ejecutarlo de manera local no se debe modificar esta etiqueta.
 
-2. En el directorio `API-db`, en el fichero `config.py`:
+2. En el directorio `/API-db`, en el fichero `config.py`:
     
     - La clave `MYSQL_PASSWORD` se puede modificar si se desea cambiar la clave del usuario `root` de la base de datos. La clave por defecto es `sysadminEHU`
     - En caso de cambiar la contraseña se debe modificar tambien la clave `MYSQL_ROOT_PASSWORD` en el servicio `db` del fichero `docker_compose.yml` 
 
-3. En el directorio `API-emails`, en el fichero `config.py`:
+3. En el directorio `/API-emails`, en el fichero `config.py`:
 
     - Las claves `GMAIL_USER` y `GMAIL_PASSWORD` deberian contener el email y la contraseña de aplicacion del servicio de correo electronico de la persona que gestiona la aplicacion. 
 
@@ -60,7 +60,7 @@ La configuracion contenida en este repositorio esta dirigida a desplegarse con `
 
 En el despliegue con _kubernetes_ se usan las imagenes previamente creadas y alojadas en `DockerHub`:
 
-[Imagen app](https://hub.docker.com/repository/docker/sergiom8m8/app/general) \\
+\\[Imagen app](https://hub.docker.com/repository/docker/sergiom8m8/app/general) \\
 [Imagen api-emails](https://hub.docker.com/repository/docker/sergiom8m8/api-emails/general) \\
 [Imagen api-db](https://hub.docker.com/repository/docker/sergiom8m8/api-db/general) \\
 
@@ -68,9 +68,12 @@ Por ello, el despliegue con _kubernetes_ no acepta modificaciones en la configur
 
 ### PASO 2: Poner en marcha la aplicacion:
 
-Para desplegar la aplicacion se debe ejecutar el siguiente comando desde el directorio `k8s` del repositorio.
+Para desplegar la aplicacion se debe ejecutar el siguiente comando desde el directorio `/k8s` del repositorio.
 
 ```bash
 kubectl -f apply .
 ```
 
+### PASO 3: Acceder a la aplicación desde el navegador
+
+Para acceder a la aplicacion es suficiente con acceder desde el navegador a la IP del cluster de _kubernetes_ en la ruta `/` o cualquier otra que cuelgue de ese _path_.
