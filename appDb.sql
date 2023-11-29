@@ -23,8 +23,10 @@ CREATE TABLE IF NOT EXISTS `rutas` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2;
 
-INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'sergiomartinportillo8@gmail.com', 'Faro del caballo', '4', '9.28', '624', 'https://www.strava.com/activities/10025666374');
-INSERT INTO `rutas` (`id`, `email`, `nombre`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'sergiomartinportillo8@gmail.com', 'Gallarraga desde La Quadra', '7', '13.68', '930', 'https://www.strava.com/activities/9271843453');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `public`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('1', 'sergiomartinportillo8@gmail.com', 'Faro del caballo', 1,  '4', '9.28', '624', 'https://www.strava.com/activities/10025666374');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `public`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('2', 'sergiomartinportillo8@gmail.com', 'Gallarraga desde La Quadra', 1, '7', '13.68', '930', 'https://www.strava.com/activities/9271843453');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `public`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('3', 'iker02@gmail.com', 'Ganekogorta desde Rekalde', 1,  '7', '18.07', '1004', 'https://es.wikiloc.com/rutas-senderismo/ganeko-desde-rekalde-ida-vuelta-10987585');
+INSERT INTO `rutas` (`id`, `email`, `nombre`, `public`, `dificultad`, `distancia`, `desnivel`, `link`) VALUES ('4', 'josusanturtzi@gmail.com', 'Serantes igoera', 1,  '5', '3.94', '231', 'https://es.wikiloc.com/rutas-senderismo/serantes-desde-barrio-los-heros-abanto-y-ciervana-11139351');
 
 
 
