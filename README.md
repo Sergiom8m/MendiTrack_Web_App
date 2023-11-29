@@ -1,6 +1,6 @@
 # Sistema_Web_Docker
 
-A continuación se proporcionan las instrucciones necesarias para desplegar la aplicación contenida en este repositorio haciendo uso de las herramientas _docker Compose_ y _kubernetes_.
+A continuación se proporcionan las instrucciones necesarias para desplegar la aplicación contenida en este repositorio haciendo uso de las herramientas _docker compose_ y _kubernetes_.
 
 ## PASO INICIAL: Clonado del repositorio
 
