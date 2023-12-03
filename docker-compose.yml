@@ -41,7 +41,7 @@ services:
       - api-emails
 
   api-db:
-    build: ./api-db
+    build: ./API-db
     image: sergiom8m8/api-db
     depends_on:
       db:
@@ -50,7 +50,7 @@ services:
       - MYSQL_HOST=db
 
   api-emails:
-    build: ./api-emails
+    build: ./API-emails
     image: sergiom8m8/api-emails
   
   phpmyadmin:
