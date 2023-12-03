@@ -83,3 +83,5 @@ Para acceder a la aplicación es suficiente con acceder desde el navegador a la 
 Por ejemplo: \
 \
 `http://34.125.431.26/`
+
+**Nota:** En _GKE_ puede tardar un tiempo bastante elevado que el objeto _ingress_ sea funcional.
