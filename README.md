@@ -73,7 +73,7 @@ Por ello, el despliegue con _kubernetes_ no acepta modificaciones en la configur
 Para desplegar la aplicación se debe ejecutar el siguiente comando desde el directorio `/k8s` del repositorio.
 
 ```bash
-kubectl -f apply .
+kubectl apply -f .
 ```
 
 #### PASO 3: Acceder a la aplicación desde el navegador
@@ -84,4 +84,13 @@ Por ejemplo: \
 \
 `http://34.125.431.26/`
 
-**Nota:** En _GKE_ puede tardar un tiempo bastante elevado que el objeto _ingress_ sea funcional.
+**Nota:** En _GKE_ puede tardar un tiempo bastante elevado que el objeto _ingress_ sea funcional. En caso de que la pagina web no se visualice reiniciar el despliegue ejecutando los siguientes comandos en el directorio `/k8s`:
+
+```bash
+kubectl delete -f .
+```
+```bash
+kubectl apply -f .
+```
+
+[Bug GKE](https://stackoverflow.com/questions/51994508/gcp-load-balancer-backend-status-unknown)
